@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Die1Er_Projektarbeit")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9498b6bacc0ae7785425d476abc0099635744b30")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc571283a3f91995e93f9eb9bb9c7e514b48dcb5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Die1Er_Projektarbeit")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Die1Er_Projektarbeit")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
