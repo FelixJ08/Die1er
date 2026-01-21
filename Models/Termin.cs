@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Die1Er_Projektarbeit.Models
 {
+    [PrimaryKey(nameof(ID))]
     public class Termin
     {
         public int ID { get; set; }
@@ -17,5 +19,8 @@ namespace Die1Er_Projektarbeit.Models
 
         [Required]
         public Benutzer? Ersteller { get; set; }
+
+        [Required]
+        public int ErstellerId { get; set; }
     }
 }
