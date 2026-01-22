@@ -1,0 +1,14 @@
+﻿@model Beitrag
+
+<form asp-action="BeitragErstellen" method="post">
+    <input asp-for="Id" type="hidden" />
+    <input asp-for="ThemaId" type="hidden" />
+
+    <div class="justify-content-center m-2">
+        <label asp-for="Inhalt" class="form-label">Inhalt:</label><br />
+        <textarea asp-for="Inhalt" class="form-control"></textarea>
+        <span asp-validation-for="Inhalt" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg m-3">Erstellen</button>
+</form>
