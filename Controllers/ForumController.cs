@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.Xml;
 using Die1Er_Projektarbeit.Data;
 using Die1Er_Projektarbeit.Models;
+using Die1Er_Projektarbeit.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,7 +43,7 @@ namespace Die1Er_Projektarbeit.Controllers
 
                     themenListe.Add(testThema);
 
-                var model = new ForumModel();
+                var model = new ForumViewModel();
 
                 model.Themen = themenListe;
 
@@ -54,7 +55,7 @@ namespace Die1Er_Projektarbeit.Controllers
             //später vielleicht differenzieren ob Thema öffentlich ist?
             var datenbankListe = datenbankContext.Thema.Include(x=>x.Ersteller).ToList();
 
-            var alternativModel = new ForumModel();
+            var alternativModel = new ForumViewModel();
 
             alternativModel.Themen = datenbankListe;
 
@@ -85,13 +86,6 @@ namespace Die1Er_Projektarbeit.Controllers
             datenbankContext.SaveChanges();
 
             return View("Forum");
-        }
-
-        public class ForumModel
-        {
-            public List<Thema> Themen { get; set; }
-
-            public List<Berufsbereich> Berufsbereiche { get; set; }
         }
     }
 }
