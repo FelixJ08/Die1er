@@ -77,7 +77,7 @@ namespace Die1Er_Projektarbeit.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ThemaErstellen(ThemaErstellenViewModel model)  // ← ViewModel!
+        public async Task<IActionResult> ThemaErstellen(ThemaErstellenViewModel model)  
         {
             model.newThema.ErstellerId = 1;
             model.newThema.Datum = DateTime.Now;

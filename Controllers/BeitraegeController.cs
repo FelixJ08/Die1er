@@ -38,7 +38,6 @@ namespace Die1Er_Projektarbeit.Controllers
             model.AutorId = 1;
             model.Datum = DateTime.Now;
 
-            model.ThemaId = 1;
 
             _context.Beitrag.Add(model);
             await _context.SaveChangesAsync();
@@ -48,7 +47,6 @@ namespace Die1Er_Projektarbeit.Controllers
 
         public IActionResult Beitrag(int Id)
         {
-            // Das Thema wird beim klicken auf dem Button mitgegeben und muss hier bei der 1 (themaId) ersetzt werden
             Thema thema = _context.Thema.Where(x => x.ID == Id).FirstOrDefault();
             List<Beitrag> beitraege = [.. _context.Beitrag.Include(x=>x.Autor).Include(x => x.Thema)
                 .Where(x => x.ThemaId == Id)];
@@ -57,8 +55,5 @@ namespace Die1Er_Projektarbeit.Controllers
             viewModel.Thema = thema;
             return View(viewModel);
         }
-
-
-
     }
 }

@@ -4,9 +4,9 @@
 <div class="container-fluid pt-4 px-4">
     <div class="d-flex justify-content-between align-items-start mb-2">
         <p class="h1 text-primary m-3">@Model.Thema.Titel</p>
-        <button class="btn btn-primary">
-            <a asp-area="" asp-controller="Beitraege" asp-action="BeitragErstellen" class="nav-item nav-link">Beitrag erstellen</a>
-        </button>
+        <a asp-area="" asp-controller="Beitraege" asp-action="BeitragErstellen"
+           asp-route-themaId="@Model.Thema.ID"
+           class="btn btn-primary">Beitrag erstellen</a>
     </div>
     @foreach (Beitrag beitrag in Model.Beitraege)
     {
