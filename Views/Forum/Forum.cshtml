@@ -2,7 +2,10 @@
 @model ForumViewModel
 
 <div>
-    <h2>Themen:</h2>
+    <div class="d-flex justify-content-between align-items-start mb-2">
+        <p class="h1 text-primary m-3">Themen:</p>
+        <a asp-area="" asp-controller="Forum" asp-action="ThemaErstellen" class="btn btn-primary">Thema erstellen</a>
+    </div>
     @foreach (var thema in Model.Themen)
     {
         <div class="card m-2">
@@ -17,7 +20,4 @@
             </div>
         </div>
     }
-    <button class="btn btn-primary">
-        <a asp-area="" asp-controller="Forum" asp-action="ThemaErstellen" class="nav-item nav-link">Thema erstellen</a>
-    </button>
 </div>
