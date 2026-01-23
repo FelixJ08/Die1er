@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Die1Er_Projektarbeit.Models;
 
 namespace Die1Er_Projektarbeit.Areas.Identity.Pages.Account
 {
@@ -65,8 +66,7 @@ namespace Die1Er_Projektarbeit.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string Username { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -111,15 +111,18 @@ namespace Die1Er_Projektarbeit.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                Benutzer benutzer = new Benutzer();
+                if (benutzer == null || benutzer.Status != "Freigegeben")
+                {
+                    ModelState.AddModelError(string.Empty, "Ungültige Anmeldedaten oder Account wartet auf Admin-Freigabe.");
+                    return Page();
+                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                
                 }
                 if (result.IsLockedOut)
                 {
