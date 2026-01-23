@@ -1,43 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model Die1Er_Projektarbeit.Controllers.ForumController.ForumModel
+﻿@using Die1Er_Projektarbeit.ViewModels;
+@model ForumViewModel
+
 <div>
     <h2>Themen:</h2>
-
     @foreach (var thema in Model.Themen)
     {
-        <ul>
-            <li>
-                @thema.Titel
-            </li>
-            <li>
-                @thema.Ersteller.Name
-            </li>
-            <li>
-                @thema.Berufsbereich
-            </li>
-        </ul>
+        <div class="card m-2">
+            <div class="card-body m-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <p class="text-secondary mb-0">@thema.Berufsbereich</p>
+                </div>
+                <h5 class="card-title">
+                    <a class="nav-link text-dark" asp-route-id="@thema.ID" asp-area="" asp-controller="Beitraege" asp-action="Beitrag">@thema.Titel</a>
+                </h5>
+                <p class="card-text">@thema.Ersteller.Name</p>
+            </div>
+        </div>
     }
-</div>
-<div>
-
-    <form asp-action="ThemaErstellen" asp-controller="Forum" method="post"  >
-
-        <label for="Titel">Titel</label>
-        <input class="form-control mb-2" id="Titel" type="text" name="Titel" />
-        
-        <label for="Berufsbereich">Berufsbereich</label>
-        
-        @foreach (var berufsbereich in Model.Berufsbereiche)
-        {
-            <label for="berufsbereich+@berufsbereich.ID">@berufsbereich.Bezeichnung</label>
-            <input class="mb-2" type="radio" name="berufsbereich" id="berufsbereich+@berufsbereich.ID" value="@berufsbereich.ID"/>
-        }
-        
-        <button class="btn btn-primary mb-2" type="submit">abschicken</button>
-    </form>
-
+    <button class="btn btn-primary">
+        <a asp-area="" asp-controller="Forum" asp-action="ThemaErstellen" class="nav-item nav-link">Thema erstellen</a>
+    </button>
 </div>

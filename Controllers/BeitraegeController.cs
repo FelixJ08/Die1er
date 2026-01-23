@@ -1,9 +1,10 @@
-﻿using Die1Er_Projektarbeit.Models;
+﻿using Die1Er_Projektarbeit.Data;
+using Die1Er_Projektarbeit.Models;
+using Die1Er_Projektarbeit.Models;
 using Die1Er_Projektarbeit.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using Die1Er_Projektarbeit.Data;
-using Die1Er_Projektarbeit.Models;
 
 namespace Die1Er_Projektarbeit.Controllers
 {
@@ -17,7 +18,7 @@ namespace Die1Er_Projektarbeit.Controllers
         {
             _logger = logger;
             _context = context;
-        }
+        } 
 
         [HttpGet]
         public IActionResult BeitragErstellen(int themaId)
@@ -45,13 +46,12 @@ namespace Die1Er_Projektarbeit.Controllers
             return RedirectToAction("Beitrag", "Beitraege", new { id = model.ThemaId });
         }
 
-        public IActionResult Beitrag(int themaId)
+        public IActionResult Beitrag(int Id)
         {
             // Das Thema wird beim klicken auf dem Button mitgegeben und muss hier bei der 1 (themaId) ersetzt werden
-
-            Thema thema = _context.Thema.Where(x => x.ID == 1).FirstOrDefault();
+            Thema thema = _context.Thema.Where(x => x.ID == Id).FirstOrDefault();
             List<Beitrag> beitraege = [.. _context.Beitrag.Include(x=>x.Autor).Include(x => x.Thema)
-                .Where(x => x.ThemaId == 1)];
+                .Where(x => x.ThemaId == Id)];
             BeitragViewModel viewModel = new BeitragViewModel();
             viewModel.Beitraege = beitraege;
             viewModel.Thema = thema;
