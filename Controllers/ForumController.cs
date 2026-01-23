@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Die1Er_Projektarbeit.Controllers
 {
-    public class ForumController(ApplicationDbContext DatenbankContext) : Controller
+    public class ForumController(ApplicationDbContext context) : Controller
     {
 
-        public readonly ApplicationDbContext datenbankContext = DatenbankContext;
+        public readonly ApplicationDbContext _context = context;
             
         public IActionResult Forum()
         {
-            if (datenbankContext.Thema.Count() == 0) 
+            if (_context.Thema.Count() == 0) 
             {
                 var testListe = new List<Thema>();
 
@@ -47,45 +47,46 @@ namespace Die1Er_Projektarbeit.Controllers
 
                 model.Themen = themenListe;
 
-                model.Berufsbereiche = datenbankContext.Berufsbereiches.ToList();
+                model.Berufsbereiche = _context.Berufsbereiches.ToList();
 
                 return View(model);
             }
             
             //später vielleicht differenzieren ob Thema öffentlich ist?
-            var datenbankListe = datenbankContext.Thema.Include(x=>x.Ersteller).ToList();
+            var datenbankListe = _context.Thema.Include(x=>x.Ersteller).ToList();
 
             var alternativModel = new ForumViewModel();
 
             alternativModel.Themen = datenbankListe;
 
-            alternativModel.Berufsbereiche = datenbankContext.Berufsbereiches.ToList();
+            alternativModel.Berufsbereiche = _context.Berufsbereiches.ToList();
 
             return View(alternativModel);
         }
 
-        [HttpPost]
-        public IActionResult ThemaErstellen(string titel, int berufsbereich)
+
+        [HttpGet]
+        public IActionResult ThemaErstellen()
         {
-            var neuesThema = new Thema();
+            ThemaErstellenViewModel forumVW = new ThemaErstellenViewModel();
+            List<Berufsbereich> allBerufsbereiche = _context.Berufsbereiches.ToList();
 
-            neuesThema.Datum = DateTime.Now;
+            forumVW.Berufsbereiche = allBerufsbereiche;
+            return View(forumVW);
+        }
 
-            //später durch Identity automatisch bestimmen
-            neuesThema.ErstellerId = 2;
 
-            neuesThema.Beitraege = new List<Beitrag>();
+        [HttpPost]
+        public async Task<IActionResult> ThemaErstellen(ThemaErstellenViewModel model)  // ← ViewModel!
+        {
+            model.newThema.ErstellerId = 1;
+            model.newThema.Datum = DateTime.Now;
+            model.newThema.Berufsbereich = _context.Berufsbereiches.Where(x => x.ID == model.SelectedBerufsbereichId).FirstOrDefault();  // ← Hier zuweisen!
 
-            neuesThema.Ersteller = datenbankContext.Benutzer.FirstOrDefault(x => x.ID == 2);
+            _context.Thema.Add(model.newThema);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Forum", "Forum", new { id = model.newThema.ID });
 
-            neuesThema.Berufsbereich = datenbankContext.Berufsbereiches.FirstOrDefault(x => x.ID == berufsbereich);
-
-            neuesThema.Titel = titel;
-
-            datenbankContext.Thema.Add(neuesThema);
-            datenbankContext.SaveChanges();
-
-            return View("Forum");
         }
     }
 }

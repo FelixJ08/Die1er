@@ -17,7 +17,7 @@ namespace Die1Er_Projektarbeit.Controllers
         {
             _logger = logger;
             _context = context;
-        }
+        } 
 
         [HttpGet]
         public IActionResult BeitragErstellen(int themaId)

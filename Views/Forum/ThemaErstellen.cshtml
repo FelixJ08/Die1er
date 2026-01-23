@@ -1,0 +1,26 @@
+﻿@using Die1Er_Projektarbeit.ViewModels;
+@model ThemaErstellenViewModel;
+
+<div>
+
+    <form asp-action="ThemaErstellen" asp-controller="Forum" method="post">
+        <input asp-for="newThema.ID" type="hidden" />
+
+        <div class="justify-content-center m-2">
+            <label asp-for="newThema.Titel" class="form-label">Titel:</label><br />
+            <textarea asp-for="newThema.Titel" class="form-control"></textarea>
+            <span asp-validation-for="newThema.Titel" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="SelectedBerufsbereichId" class="form-label">Berufsbereich:</label>
+            <select asp-for="SelectedBerufsbereichId"
+                    class="form-select"
+                    asp-items="@(new SelectList(Model.Berufsbereiche, "ID", "Bezeichnung"))">
+                <option value="">-- Bitte wählen --</option>
+            </select>
+            <span asp-validation-for="SelectedBerufsbereichId" class="text-danger"></span>
+        </div>
+        <button class="btn btn-primary mb-2" type="submit">abschicken</button>
+    </form>
+
+</div>
