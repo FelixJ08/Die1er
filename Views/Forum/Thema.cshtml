@@ -1,0 +1,24 @@
+﻿@using Die1Er_Projektarbeit.ViewModels;
+@model ThemaViewModel
+
+<div class="d-flex justify-content-between align-items-start mb-2">
+    <p class="h1 text-primary m-3">@Model.Thema.Titel</p>
+    <a asp-area="" asp-controller="Beitrag" asp-action="BeitragErstellen"
+        asp-route-themaId="@Model.Thema.ID"
+        class="btn btn-primary">Neuer Beitrag</a>
+</div>
+@foreach (Beitrag beitrag in Model.Beitraege)
+{
+    <div class="card m-2 border-0 shadow">
+        <div class="card-body m-3">
+            <a class="nav-link text-dark" asp-route-id="@beitrag.Id" asp-area="" asp-controller="Forum" asp-action="Beitrag">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <p class="text-secondary mb-0">von @beitrag.Autor.Name</p>
+                <p class="text-secondary mb-0">@DateOnly.FromDateTime(Convert.ToDateTime(beitrag.Datum))</p>
+            </div>
+            <h5 class="card-title">TITEL-PLATZHALTER</h5>
+            <p class="card-text">@beitrag.Inhalt</p>      
+            </a>
+        </div> 
+    </div>
+}

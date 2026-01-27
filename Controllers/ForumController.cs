@@ -12,7 +12,7 @@ namespace Die1Er_Projektarbeit.Controllers
 
         public readonly ApplicationDbContext _context = context;
             
-        public IActionResult Forum()
+        public IActionResult Startseite()
         {
             if (_context.Thema.Count() == 0) 
             {
@@ -64,29 +64,22 @@ namespace Die1Er_Projektarbeit.Controllers
             return View(alternativModel);
         }
 
-
-        [HttpGet]
-        public IActionResult ThemaErstellen()
+        public IActionResult Thema(int Id)
         {
-            ThemaErstellenViewModel forumVW = new ThemaErstellenViewModel();
-            List<Berufsbereich> allBerufsbereiche = _context.Berufsbereiches.ToList();
-
-            forumVW.Berufsbereiche = allBerufsbereiche;
-            return View(forumVW);
+            Thema thema = _context.Thema.Where(x => x.ID == Id).FirstOrDefault();
+            List<Beitrag> beitraege = [.. _context.Beitrag.Include(x=>x.Autor).Include(x => x.Thema)
+                .Where(x => x.ThemaId == Id)];
+            ThemaViewModel viewModel = new ThemaViewModel();
+            viewModel.Beitraege = beitraege;
+            viewModel.Thema = thema;
+            return View(viewModel);
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> ThemaErstellen(ThemaErstellenViewModel model)  
+        public IActionResult Beitrag(int id)
         {
-            model.newThema.ErstellerId = 1;
-            model.newThema.Datum = DateTime.Now;
-            model.newThema.Berufsbereich = _context.Berufsbereiches.Where(x => x.ID == model.SelectedBerufsbereichId).FirstOrDefault();  // ← Hier zuweisen!
-
-            _context.Thema.Add(model.newThema);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Forum", "Forum", new { id = model.newThema.ID });
-
+            Beitrag beitrag = _context.Beitrag.Include(x => x.Autor)
+                .Where(x => x.Id == id).FirstOrDefault();
+            return View(beitrag);
         }
     }
 }

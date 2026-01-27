@@ -2,7 +2,7 @@
 
 namespace Die1Er_Projektarbeit.ViewModels
 {
-    public class BeitragViewModel
+    public class ThemaViewModel
     {
         public List<Beitrag> Beitraege { get; set; }
 
