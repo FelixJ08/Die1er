@@ -9,11 +9,28 @@ namespace Die1Er_Projektarbeit.Controllers
     {
         public readonly ApplicationDbContext _context = context;
 
-        public IActionResult Beitrag(int id)
+        [HttpGet]
+        public IActionResult BeitragErstellen(int themaId)
         {
-            Beitrag beitrag = _context.Beitrag.Include(x => x.Autor)
-                .Where(x => x.Id == id).FirstOrDefault();
-            return View(beitrag);
+            var model = new Beitrag
+            {
+                ThemaId = themaId
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BeitragErstellen(Beitrag model)
+        {
+            // Muss noch geändert werden, sobald login klappt. 
+            model.AutorId = 1;
+            model.Datum = DateTime.Now;
+
+            _context.Beitrag.Add(model);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Beitrag", "Beitraege", new { id = model.ThemaId });
         }
     }
 }

@@ -20,38 +20,27 @@ namespace Die1Er_Projektarbeit.Controllers
         } 
 
         [HttpGet]
-        public IActionResult BeitragErstellen(int themaId)
+        public IActionResult ThemaErstellen()
         {
-            var model = new Beitrag
-            {
-                ThemaId = themaId
-            };
+            ThemaErstellenViewModel forumVW = new ThemaErstellenViewModel();
+            List<Berufsbereich> allBerufsbereiche = _context.Berufsbereiches.ToList();
 
-            return View(model);
+            forumVW.Berufsbereiche = allBerufsbereiche;
+            return View(forumVW);
         }
+
 
         [HttpPost]
-        public async Task<IActionResult> BeitragErstellen(Beitrag model)
+        public async Task<IActionResult> ThemaErstellen(ThemaErstellenViewModel model)
         {
-            // Muss noch geändert werden, sobald login klappt. 
-            model.AutorId = 1;
-            model.Datum = DateTime.Now;  
+            model.newThema.ErstellerId = 1;
+            model.newThema.Datum = DateTime.Now;
+            model.newThema.Berufsbereich = _context.Berufsbereiches.Where(x => x.ID == model.SelectedBerufsbereichId).FirstOrDefault();  // ← Hier zuweisen!
 
-            _context.Beitrag.Add(model);
+            _context.Thema.Add(model.newThema);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Forum", "Forum", new { id = model.newThema.ID });
 
-            return RedirectToAction("Beitrag", "Beitraege", new { id = model.ThemaId });
-        }
-
-        public IActionResult Thema(int Id)
-        {
-            Thema thema = _context.Thema.Where(x => x.ID == Id).FirstOrDefault();
-            List<Beitrag> beitraege = [.. _context.Beitrag.Include(x=>x.Autor).Include(x => x.Thema)
-                .Where(x => x.ThemaId == Id)];
-            ThemaViewModel viewModel = new ThemaViewModel();
-            viewModel.Beitraege = beitraege;
-            viewModel.Thema = thema;
-            return View(viewModel);
         }
     }
 }
