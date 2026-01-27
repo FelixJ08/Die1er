@@ -1,13 +1,10 @@
-﻿@using Die1Er_Projektarbeit.ViewModels;
-@model ThemaViewModel
+﻿@using Die1Er_Projektarbeit.Models
+@using Die1Er_Projektarbeit.ViewModels
+@model AlleBeitraegeViewModel
 
-<div class="d-flex justify-content-between align-items-start mb-2">
-    <p class="h1 text-primary m-3">@Model.Thema.Titel</p>
-    <a asp-area="" asp-controller="Beitrag" asp-action="BeitragErstellen"
-       asp-route-themaId="@Model.Thema.ID"
-       class="btn btn-primary">Neuer Beitrag</a>
-</div>
-@foreach (Beitrag beitrag in Model.Beitraege)
+<p class="h1 text-primary m-3">Alle Beiträge</p>
+
+@foreach (Beitrag beitrag in Model.Beitragliste)
 {
     <div class="card m-2 border-0 shadow">
         <div class="card-body m-3">

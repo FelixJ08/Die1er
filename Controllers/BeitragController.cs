@@ -1,6 +1,7 @@
 ﻿using Die1Er_Projektarbeit.Data;
 using Microsoft.AspNetCore.Mvc;
 using Die1Er_Projektarbeit.Models;
+using Die1Er_Projektarbeit.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Die1Er_Projektarbeit.Controllers
@@ -31,6 +32,17 @@ namespace Die1Er_Projektarbeit.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Beitrag", "Beitraege", new { id = model.ThemaId });
+        }
+
+        public IActionResult AlleBeitraege()
+        {
+            AlleBeitraegeViewModel model = new AlleBeitraegeViewModel();
+            model.Beitragliste = _context.Beitrag
+                .Include(x => x.Autor)
+                .Include(x => x.Thema)
+                .Include(x => x.Reaktionen)
+                .ToList();
+            return View(model);
         }
     }
 }
