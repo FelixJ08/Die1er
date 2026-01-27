@@ -1,0 +1,13 @@
+﻿@using Die1Er_Projektarbeit.ViewModels;
+@model Beitrag
+
+<div class="card m-2 border-0 shadow">
+    <div class="card-body m-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <p class="text-secondary mb-0">von @Model.Autor.Name</p>
+            <p class="text-secondary mb-0">@DateOnly.FromDateTime(Convert.ToDateTime(Model.Datum))</p>
+        </div>
+        <h5 class="card-title">TITEL-PLATZHALTER</h5>
+        <p class="card-text">@Model.Inhalt</p>                                                                                                                                                                   
+    </div>
+</div>
