@@ -30,7 +30,7 @@ namespace Die1Er_Projektarbeit.Controllers
             _context.Beitrag.Add(model);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Beitrag", "Beitraege", new { id = model.ThemaId });
+            return RedirectToAction("Thema", "Forum", new { id = model.ThemaId });
         }
     }
 }

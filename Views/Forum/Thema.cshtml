@@ -16,8 +16,16 @@
                 <p class="text-secondary mb-0">von @beitrag.Autor.Name</p>
                 <p class="text-secondary mb-0">@DateOnly.FromDateTime(Convert.ToDateTime(beitrag.Datum))</p>
             </div>
-            <h5 class="card-title">TITEL-PLATZHALTER</h5>
-            <p class="card-text">@beitrag.Inhalt</p>      
+                <h5 class="card-title">TITEL-PLATZHALTER</h5>
+                @if(beitrag.Inhalt.Length > 150)
+                {
+                    <p class="card-text">@beitrag.Inhalt.Substring(0, Math.Min(150, beitrag.Inhalt.Length)).Trim()...</p>
+                }
+                else
+                {
+                    <p class="card-text">@beitrag.Inhalt</p>
+                }
+
             </a>
         </div> 
     </div>
