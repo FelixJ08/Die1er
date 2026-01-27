@@ -2,31 +2,41 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Die1Er_Projektarbeit.Data;
+using Die1Er_Projektarbeit.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Die1Er_Projektarbeit.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Die1Er_Projektarbeit.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ApplicationDbContext _context;
+
+
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
+            _context = context;
         }
 
         /// <summary>
@@ -105,39 +115,45 @@ namespace Die1Er_Projektarbeit.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                Benutzer benutzer = new Benutzer();
+                // Benutzer finden + Status prüfen
+                var benutzer = await _context.Benutzer
+                    .FirstOrDefaultAsync(b => b.Name == Input.Username || b.Email == Input.Username);
+
                 if (benutzer == null || benutzer.Status != "Freigegeben")
                 {
-                    ModelState.AddModelError(string.Empty, "Ungültige Anmeldedaten oder Account wartet auf Admin-Freigabe.");
+                    ModelState.AddModelError(string.Empty, "Account wartet auf Freigabe.");
                     return Page();
                 }
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
-            }
 
-            // If we got this far, something failed, redisplay form
+                // DEINEN Hash prüfen (BEIBEHALTEN!)
+                var passwordHasher = new PasswordHasher<object>();
+                var verifyResult = passwordHasher.VerifyHashedPassword(null, benutzer.PasswordHash, Input.Password);
+
+                if (verifyResult != PasswordVerificationResult.Success)
+                {
+                    ModelState.AddModelError(string.Empty, "Falsches Passwort.");
+                    return Page();
+                }
+
+                // IdentityUser finden (für korrekten Cookie)
+                var identityUser = await _userManager.FindByNameAsync(Input.Username);
+                if (identityUser == null)
+                {
+                    ModelState.AddModelError(string.Empty, "IdentityUser nicht gefunden.");
+                    return Page();
+                }
+
+                // IDENTITY SignIn (korrekter Cookie für _LoginPartial)
+                await _signInManager.SignInAsync(identityUser, Input.RememberMe);
+
+                _logger.LogInformation("User {Name} logged in.", benutzer.Name);
+                return LocalRedirect(returnUrl);
+            }
             return Page();
         }
+
+
     }
 }
