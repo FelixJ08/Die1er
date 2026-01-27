@@ -36,8 +36,7 @@ namespace Die1Er_Projektarbeit.Controllers
         {
             // Muss noch geändert werden, sobald login klappt. 
             model.AutorId = 1;
-            model.Datum = DateTime.Now;
-
+            model.Datum = DateTime.Now;  
 
             _context.Beitrag.Add(model);
             await _context.SaveChangesAsync();

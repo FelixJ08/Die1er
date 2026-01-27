@@ -1,23 +1,23 @@
 ﻿@using Die1Er_Projektarbeit.ViewModels;
 @model ForumViewModel
 
-<div>
     <div class="d-flex justify-content-between align-items-start mb-2">
         <p class="h1 text-primary m-3">Themen:</p>
-        <a asp-area="" asp-controller="Forum" asp-action="ThemaErstellen" class="btn btn-primary">Thema erstellen</a>
+        <a asp-area="" asp-controller="Forum" asp-action="ThemaErstellen" class="btn btn-primary">Neues Thema</a>
     </div>
     @foreach (var thema in Model.Themen)
     {
-        <div class="card m-2">
-            <div class="card-body m-3">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <p class="text-secondary mb-0">@thema.Berufsbereich</p>
-                </div>
-                <h5 class="card-title">
-                    <a class="nav-link text-dark" asp-route-id="@thema.ID" asp-area="" asp-controller="Beitraege" asp-action="Beitrag">@thema.Titel</a>
-                </h5>
-                <p class="card-text">@thema.Ersteller.Name</p>
+    <div class="card m-2 border-0 shadow">
+        <div class="card-body m-3">
+            <a class="nav-link text-dark" asp-route-id="@thema.ID" asp-area="" asp-controller="Beitraege" asp-action="Beitrag">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                    <p class="text-secondary mb-0">von @thema.Ersteller</p>
+                <p class="text-secondary mb-0">@DateOnly.FromDateTime(Convert.ToDateTime(thema.Datum))</p>
             </div>
+            <h5 class="card-title">@thema.Titel</h5>
+            <p class="card-text">@thema.Berufsbereich</p>
+            </a>
         </div>
+    </div>
     }
-</div>
+
