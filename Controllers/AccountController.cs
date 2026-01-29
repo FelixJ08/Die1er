@@ -13,7 +13,7 @@ namespace Die1Er_Projektarbeit.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context; // Dein MSSQL DbContext
+        private readonly ApplicationDbContext _context;
 
         public AccountController(ApplicationDbContext context)
         {
@@ -25,17 +25,14 @@ namespace Die1Er_Projektarbeit.Controllers
         {
             return View(new RegisterBenutzerViewModel { ReturnUrl = returnUrl });
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterBenutzerViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
 
             if (_context.Benutzer.Any(b => b.Email == model.Email))
             {
-                ModelState.AddModelError("", "Benutzername ist bereits vergeben");
+                ModelState.AddModelError("", "E-Mail bereits vergeben");
                 return View(model);
             }
 
@@ -44,16 +41,14 @@ namespace Die1Er_Projektarbeit.Controllers
                 Nachname = model.Nachname,
                 Vorname = model.Vorname,
                 Email = model.Email,
-                PasswordHash = model.Passwort,
-                Rolle = model.Rolle,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Passwort), // ✅ FIX!
+                Rolle = model.Rolle ?? "User",
                 Status = "Wartend"
             };
 
             _context.Benutzer.Add(neuerBenutzer);
             await _context.SaveChangesAsync();
 
-            // KEIN Login!
-            // Zeige Screen "Wird geprüft"
             return RedirectToAction(nameof(RegistrationPending));
         }
 
