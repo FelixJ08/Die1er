@@ -30,7 +30,8 @@ namespace Die1Er_Projektarbeit.Controllers
                         ID = 1,
                         Status = "Admin",
                         Rolle = "Admin",
-                        Name = "Test/Keine Themen vorhanden",
+                        Vorname = "TestVorname",
+                        Nachname = "TestNachname",
                         Email = "0",
                         Themen = new List<Thema>(),
                     };
