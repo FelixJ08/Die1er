@@ -29,3 +29,34 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* ===== DARK MODE ===== */
+
+body.dark-mode {
+    background-color: #121212;
+    color: #eaeaea;
+}
+
+    body.dark-mode .navbar {
+        background-color: #1a1a1a !important;
+    }
+
+    body.dark-mode .nav-link {
+        color: #eaeaea !important;
+    }
+
+    body.dark-mode footer {
+        background-color: #1a1a1a;
+        color: #aaa;
+    }
+
+    body.dark-mode .card {
+        background-color: #1e1e1e;
+        color: #eaeaea;
+    }
+
+    /* Switch schöner im Dark Mode */
+    body.dark-mode .form-check-input {
+        background-color: #555;
+        border-color: #777;
+    }

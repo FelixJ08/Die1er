@@ -23,7 +23,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Forum" asp-action="Startseite">Forum</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Beitrag" asp-action="">Alle Beiträge</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Beitrag" asp-action="AlleBeitraege">Alle Beiträge</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Account</a>
@@ -32,7 +32,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">AdminCenter</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="themeSwitch">
+                            <label class="form-check-label" for="themeSwitch" id="themeIcon">
+                                🌙
+                            </label>
+                        </div>
+
+                        <partial name="_LoginPartial" />
+                    </div>
+
                 </div>
             </div>
         </nav>
