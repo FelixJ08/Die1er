@@ -1,0 +1,28 @@
+﻿@using Die1Er_Projektarbeit.ViewModels
+@model LoginBenutzerViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row">
+    <form id="registerForm" asp-action="Login" asp-controller="Account"
+          asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+        <div class="form-floating mb-3">
+            <input asp-for="Email" class="form-control" />
+            <label asp-for="Email"></label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Passwort" class="form-control" />
+            <label asp-for="Passwort"></label>
+        </div>
+
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Éinloggen</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

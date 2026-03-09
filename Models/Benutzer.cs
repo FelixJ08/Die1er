@@ -8,7 +8,6 @@ namespace Die1Er_Projektarbeit.Models
     public enum UserStatus { Wartend = 0, Aktiv = 1, Gesperrt = 2 }
 
     [PrimaryKey(nameof(ID))]
-
     public class Benutzer
     {
         public int ID { get; set; }

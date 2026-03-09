@@ -57,5 +57,61 @@ namespace Die1Er_Projektarbeit.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Login(string? returnUrl = null)
+        {
+            var model = new LoginBenutzerViewModel { ReturnUrl = returnUrl ?? "/" };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginBenutzerViewModel model)
+        {
+            var benutzer = _context.Benutzer
+                .FirstOrDefault(b => b.Email == model.Email && b.Status == "Freigegeben");
+
+            if (benutzer == null || !BCrypt.Net.BCrypt.Verify(model.Passwort, benutzer.PasswordHash))
+            {
+                ModelState.AddModelError("", "Ungültige Anmeldedaten oder Konto nicht freigegeben");
+                return View(model);
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, benutzer.ID.ToString()),
+                new Claim(ClaimTypes.Name, $"{benutzer.Vorname} {benutzer.Nachname}"),  
+                new Claim(ClaimTypes.Email, benutzer.Email),
+                new Claim("Rolle", benutzer.Rolle ?? "User"),
+                new Claim("Vorname", benutzer.Vorname),
+                new Claim("Nachname", benutzer.Nachname)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                   var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = model.RememberMe,
+                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(14) : null
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+            return LocalRedirect(model.ReturnUrl ?? "/");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            // Session/Cookie komplett löschen
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Zur Startseite (oder Login)
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
