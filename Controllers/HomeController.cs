@@ -15,6 +15,10 @@ namespace Die1Er_Projektarbeit.Controllers
 
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("AuthTabs", "Account");
+            }
             return View();
         }
 
