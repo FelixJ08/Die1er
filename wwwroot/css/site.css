@@ -1,31 +1,172 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+/* ===== Buttons & Input Fokus ===== */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
+
+/* ===== Navbar ===== */
+.navbar {
+    background-color: #fdc33a !important;
+}
+
+    .navbar .nav-link {
+        color: white !important;
+        font-weight: 500;
+    }
+
+        .navbar .nav-link:hover {
+            color: black !important;
+        }
+
+        /* Aktiver Navbar Link = Gelb */
+        .navbar .nav-link.active {
+            color: #fdc33a !important;
+            font-weight: 600;
+        }
+
+/* ===== Buttons ===== */
+.text-primary {
+    color: #575756 !important;
+}
+
+.btn-primary {
+    background-color: #fdc33a !important;
+    border-color: #fdc33a !important;
+    color: #575756 !important;
+}
+
+    .btn-primary:hover {
+        background-color: #e5b233 !important;
+        border-color: #e5b233 !important;
+    }
+
+/* ===== Footer ===== */
+footer a {
+    color: #fdc33a !important;
+}
+
+    footer a:hover {
+        color: #e5b233 !important;
+    }
+
+/* ===== Input Felder Fokus ===== */
+.form-control:focus {
+    border-color: #fdc33a !important;
+    box-shadow: 0 0 0 0.2rem rgba(253, 195, 58, 0.25) !important;
+}
+
+.form-check-input:focus {
+    border-color: #fdc33a !important;
+    box-shadow: 0 0 0 0.2rem rgba(253, 195, 58, 0.25) !important;
+}
+
+/* ===== Dark Mode ===== */
+body.dark-mode {
+    background-color: #2b2b2b;
+    color: #fdc33a;
+}
+
+    body.dark-mode .card {
+        background-color: #3a3a3a;
+        color: white;
+    }
+
+    body.dark-mode .navbar {
+        background-color: #444444 !important;
+    }
+
+    body.dark-mode footer {
+        background-color: #3a3a3a;
+        color: white;
+    }
+
+    /* Dark Mode Text Override */
+    body.dark-mode .card-title,
+    body.dark-mode .card-text,
+    body.dark-mode .text-secondary {
+        color: white !important;
+    }
+
+    body.dark-mode .h1,
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3,
+    body.dark-mode h4,
+    body.dark-mode h5 {
+        color: #fdc33a !important;
+    }
+
+    body.dark-mode .navbar .nav-link {
+        color: white !important;
+    }
+
+        body.dark-mode .navbar .nav-link.active {
+            color: #fdc33a !important;
+        }
+
+/* ===== Toggle Switch ===== */
+.theme-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .theme-switch input {
+        display: none;
+    }
+
+.slider {
+    width: 50px;
+    height: 24px;
+    background: #ccc;
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+}
+
+    .slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        top: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+input:checked + .slider {
+    background: #fdc33a;
+}
+
+    input:checked + .slider::before {
+        transform: translateX(26px);
+    }
