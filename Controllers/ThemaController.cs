@@ -39,7 +39,7 @@ namespace Die1Er_Projektarbeit.Controllers
 
             _context.Thema.Add(model.newThema);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Forum", "Forum", new { id = model.newThema.ID });
+            return RedirectToAction("Startseite", "Forum", new { id = model.newThema.ID });
 
         }
     }

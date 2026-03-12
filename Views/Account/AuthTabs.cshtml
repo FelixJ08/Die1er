@@ -1,0 +1,258 @@
+﻿@using Die1Er_Projektarbeit.ViewModels
+@model AuthViewModelForRegLogin
+<style>
+    /* @@keyframes für Razor */
+    @@keyframes slideInLeft {
+        from {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @@keyframes slideInRight {
+        from {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @@keyframes tabGlow {
+        0% {
+            box-shadow: 0 0 0 rgba(102, 126, 234, 0);
+        }
+
+        50% {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+        }
+
+        100% {
+            box-shadow: 0 0 0 rgba(102, 126, 234, 0);
+        }
+    }
+
+    /* CLEAN DESIGN */
+    .auth-container {
+        position: relative;
+    }
+
+    .tab-content {
+        min-height: 420px;
+    }
+
+    .tab-pane {
+        animation-duration: 0.4s;
+        animation-timing-function: ease-out;
+    }
+
+    #login-tab-pane.show {
+        animation-name: slideInLeft;
+    }
+
+    #register-tab-pane.show {
+        animation-name: slideInRight;
+    }
+
+    /* ELEGANTE TABS */
+    .nav-tabs {
+        border-bottom: 2px solid #e5e7eb;
+        margin-bottom: 0;
+    }
+
+    .nav-link {
+        border: none;
+        border-radius: 12px 12px 0 0;
+        margin: 0 2px;
+        padding: 12px 20px;
+        font-weight: 500;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #6b7280;
+    }
+
+        .nav-link:hover {
+            color: #374151;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #1e40af;
+            background: rgba(102, 126, 234, 0.1);
+            border-bottom: none !important;
+            animation: tabGlow 0.6s ease-out;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+    /* FORM ELEMENTS */
+    .form-floating > .form-control:focus,
+    .form-floating > .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    }
+
+    .btn {
+        position: relative !important;
+        z-index: 20 !important;
+        pointer-events: auto !important;
+    }
+
+        /* Hover-Effekt SAFER */
+        .btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+
+    /* CLEAN CARD */
+    .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: none !important;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-sm-8">
+            <div class="card shadow-lg auth-container">
+                <div class="card-header bg-white border-0 pb-0">
+                    <ul class="nav nav-tabs nav-fill" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-tab-pane" type="button">
+                                <i class="bi bi-box-arrow-in-right"></i> Einloggen
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button">
+                                <i class="bi bi-person-plus"></i> Registrieren
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-4 position-relative">
+                    <!-- BLASEN CONTAINER -->
+                    <div id="bubbleContainer" class="position-absolute top-0 start-0 w-100 h-100"></div>
+
+                    <div class="tab-content">
+                        <!-- LOGIN -->
+                        <div class="tab-pane fade show active" id="login-tab-pane" role="tabpanel">
+                            <form id="loginForm" asp-action="AuthTabs" asp-controller="Account" method="post">
+                                <input type="hidden" name="IsLoginSubmission" value="true" />
+                                <input asp-for="login.ReturnUrl" type="hidden" />
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="login.Email" class="form-control" id="loginEmail" />
+                                    <label asp-for="login.Email"></label>
+                                    <span asp-validation-for="login.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-4">
+                                    <input asp-for="login.Passwort" class="form-control" id="loginPasswort" />
+                                    <label asp-for="login.Passwort"></label>
+                                </div>
+                                <button type="submit" class="w-100 btn btn-lg btn-primary shadow-sm">
+                                    <i class="bi bi-box-arrow-in-right"></i> Einloggen
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- REGISTER -->
+                        <div class="tab-pane fade" id="register-tab-pane" role="tabpanel">
+                            <form id="registerForm" asp-action="AuthTabs" asp-controller="Account" method="post">
+                                <input asp-for="register.ReturnUrl" type="hidden" />
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="register.Email" class="form-control" id="regEmail" />
+                                    <label asp-for="register.Email"></label>
+                                    <span asp-validation-for="register.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="register.Passwort" class="form-control" id="regPasswort" />
+                                    <label asp-for="register.Passwort"></label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="register.PasswortBestätigung" class="form-control" id="regPasswortConfirm" />
+                                    <label asp-for="register.PasswortBestätigung">Passwort bestätigen</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-floating mb-3">
+                                            <input asp-for="register.Vorname" class="form-control" id="regVorname" />
+                                            <label asp-for="register.Vorname"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-floating mb-3">
+                                            <input asp-for="register.Nachname" class="form-control" id="regNachname" />
+                                            <label asp-for="register.Nachname"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-floating mb-4">
+                                    <select asp-for="register.Rolle" class="form-select">
+                                        <option value="">Rolle wählen</option>
+                                        <option value="Ausbilder">Ausbilder</option>
+                                        <option value="Lehrkraft">Lehrkraft</option>
+                                    </select>
+                                    <label asp-for="register.Rolle"></label>
+                                </div>
+                                <button type="submit" class="w-100 btn btn-lg btn-success shadow-sm">
+                                    <i class="bi bi-person-plus"></i> Registrieren
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.nav-link[data-bs-toggle="tab"]');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function (e) {
+                createBubbles();
+                animateTabTransition(e.target);
+            });
+        });
+
+        function createBubbles() {
+            const container = document.getElementById('bubbleContainer');
+            container.innerHTML = '';
+
+            for(let i = 0; i < 4; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.top = Math.random() * 100 + '%';
+                container.appendChild(bubble);
+            }
+        }
+
+        function animateTabTransition(activeTab) {
+            const targetPane = document.querySelector(activeTab.getAttribute('data-bs-target'));
+            targetPane.style.animationPlayState = 'running';
+        }
+    });
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
