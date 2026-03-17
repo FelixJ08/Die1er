@@ -35,9 +35,12 @@
                         <li class="nav-item">
                             <a class="nav-link @(ViewData["ActivePage"] as string == "Account" ? "active" : "")" asp-area="" asp-controller="" asp-action="">Account</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewData["ActivePage"] as string == "AdminCenter" ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="AdminCenter">AdminCenter</a>
-                        </li>
+                        @if (@User.FindFirst("Rolle")?.Value == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewData["ActivePage"] as string == "AdminCenter" ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="AdminCenter">AdminCenter</a>
+                            </li>
+                        }
                     </ul>
 
                     <div class="d-flex align-items-center gap-3">

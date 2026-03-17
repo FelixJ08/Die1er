@@ -1,4 +1,7 @@
 ﻿using Die1Er_Projektarbeit.Data;
+using Die1Er_Projektarbeit.Models;
+using Die1Er_Projektarbeit.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Die1Er_Projektarbeit.Controllers
@@ -10,10 +13,15 @@ namespace Die1Er_Projektarbeit.Controllers
 
         public IActionResult AdminCenter()
         {
-            var wartendeNutzer = _context.Benutzer.Where(x => x.Status == "Wartend").ToList();
+            AdminCenterViewModel viewModel = new AdminCenterViewModel();
 
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("AuthTabs", "Account");
+            }
+            viewModel.BenutzerListe = _context.Benutzer.Where(x => x.Status == "Wartend").ToList();
 
-            return View(wartendeNutzer);
+            return View(viewModel);
         }
 
         public IActionResult Auswerten(bool Auswertung, int NutzerId)

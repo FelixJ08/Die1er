@@ -1,23 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Die1Er_Projektarbeit.ViewModels
+@model AdminCenterViewModel 
 
-@model List<Benutzer>
-
-
-<table class="table-bordered">
-    @foreach (var benutzer in Model)
-    {
-        <tr>
-            <td>Name : @benutzer.Vorname @benutzer.Nachname</td>
-            <td>Emailadresse : @benutzer.Email</td>
-            <td>Rolle : @benutzer.Rolle</td>
-            <td></td>
-                <a class="btn btn-group btn-success" href="@Url.ActionLink("Auswerten","Admin",new {Auswertung = true, NutzerId = benutzer.ID})">Erlauben</a>
-                <a class="btn btn-group btn-danger" href="@Url.ActionLink("Auswerten", "Admin", new {Auswertung = false, NutzerId = benutzer.ID})">Ablehnen</a>
-            
-        </tr>
-    }
-</table>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Rolle</th>
+                <th>Annehmen</th>
+                <th>Ablehnen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var benutzer in Model.BenutzerListe)
+            {
+                <tr>
+                    <td>@benutzer.Vorname @benutzer.Nachname</td>
+                    <td>@benutzer.Email</td>
+                    <td>@benutzer.Rolle</td>
+                    <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-success btn-sm" href="@Url.Action("Auswerten", "Admin", new { Auswertung = true, NutzerId = benutzer.ID })">
+                                <i class="bi bi-check-circle"></i>✓
+                            </a>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-danger btn-sm" href="@Url.Action("Auswerten", "Admin", new { Auswertung = false, NutzerId = benutzer.ID })">
+                                <i class="bi bi-x-circle"></i>✘
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
