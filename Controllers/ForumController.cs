@@ -14,7 +14,11 @@ namespace Die1Er_Projektarbeit.Controllers
             
         public IActionResult Startseite()
         {
-            if (_context.Thema.Count() == 0) 
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("AuthTabs", "Account");
+            }
+                if (_context.Thema.Count() == 0) 
             {
                 var testListe = new List<Thema>();
 
