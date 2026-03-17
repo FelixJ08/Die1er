@@ -33,9 +33,11 @@ namespace Die1Er_Projektarbeit.Controllers
         [HttpPost]
         public async Task<IActionResult> ThemaErstellen(ThemaErstellenViewModel model)
         {
-            model.newThema.ErstellerId = 1;
+            
+
+            model.newThema.ErstellerId = Convert.ToInt32(User.FindFirst("ID").Value);
             model.newThema.Datum = DateTime.Now;
-            model.newThema.Berufsbereich = _context.Berufsbereiches.Where(x => x.ID == model.SelectedBerufsbereichId).FirstOrDefault();  // ← Hier zuweisen!
+            model.newThema.Berufsbereich = _context.Berufsbereiches.Where(x => x.ID == model.SelectedBerufsbereichId).FirstOrDefault();  
 
             _context.Thema.Add(model.newThema);
             await _context.SaveChangesAsync();

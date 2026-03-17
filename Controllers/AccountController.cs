@@ -36,7 +36,7 @@ namespace Die1Er_Projektarbeit.Controllers
             if (model.IsLoginSubmission)
             {
                 var benutzer = _context.Benutzer
-                .FirstOrDefault(b => b.Email == model.login.Email && b.Status == "Freigegeben");
+                    .FirstOrDefault(b => b.Email == model.login.Email && b.Status == "Freigegeben");
 
                 if (benutzer == null || !BCrypt.Net.BCrypt.Verify(model.login.Passwort, benutzer.PasswordHash))
                 {
@@ -52,7 +52,8 @@ namespace Die1Er_Projektarbeit.Controllers
                     new Claim(ClaimTypes.Email, benutzer.Email),
                     new Claim("Rolle", benutzer.Rolle ?? "User"),
                     new Claim("Vorname", benutzer.Vorname),
-                    new Claim("Nachname", benutzer.Nachname)
+                    new Claim("Nachname", benutzer.Nachname),
+                    new Claim("ID", benutzer.ID.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

@@ -23,8 +23,7 @@ namespace Die1Er_Projektarbeit.Controllers
         [HttpPost]
         public async Task<IActionResult> BeitragErstellen(Beitrag model)
         {
-            // Muss noch geändert werden, sobald login klappt. 
-            model.AutorId = 1;
+            model.AutorId = Convert.ToInt32(User.FindFirst("ID").Value);
             model.Datum = DateTime.Now;
 
             _context.Beitrag.Add(model);
