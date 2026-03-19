@@ -13,5 +13,7 @@ namespace Die1Er_Projektarbeit.Models
 
         [MaxLength(500)]
         public string? Beschreibung { get; set; }
+
+        public List<Thema> Themen { get; set; }
     }
 }

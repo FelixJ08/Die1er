@@ -21,6 +21,9 @@ namespace Die1Er_Projektarbeit.Models
         public Berufsbereich? Berufsbereich { get; set; }
 
         [Required]
+        public int berufsbereichID { get; set; }
+
+        [Required]
         public DateTime? Datum { get; set; }
 
         public List<Beitrag>? Beitraege { get; set; }
