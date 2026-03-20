@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Die1Er_Projektarbeit.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationInit : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,8 +56,10 @@ namespace Die1Er_Projektarbeit.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Vorname = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Nachname = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rolle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -126,8 +128,8 @@ namespace Die1Er_Projektarbeit.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -171,8 +173,8 @@ namespace Die1Er_Projektarbeit.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -216,7 +218,7 @@ namespace Die1Er_Projektarbeit.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titel = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ErstellerId = table.Column<int>(type: "int", nullable: false),
-                    BerufsbereichID = table.Column<int>(type: "int", nullable: false),
+                    berufsbereichID = table.Column<int>(type: "int", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -229,11 +231,11 @@ namespace Die1Er_Projektarbeit.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Thema_Berufsbereiches_BerufsbereichID",
-                        column: x => x.BerufsbereichID,
+                        name: "FK_Thema_Berufsbereiches_berufsbereichID",
+                        column: x => x.berufsbereichID,
                         principalTable: "Berufsbereiches",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,7 +263,7 @@ namespace Die1Er_Projektarbeit.Migrations
                         column: x => x.ThemaId,
                         principalTable: "Thema",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -356,9 +358,9 @@ namespace Die1Er_Projektarbeit.Migrations
                 column: "ErstellerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Thema_BerufsbereichID",
+                name: "IX_Thema_berufsbereichID",
                 table: "Thema",
-                column: "BerufsbereichID");
+                column: "berufsbereichID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Thema_ErstellerId",

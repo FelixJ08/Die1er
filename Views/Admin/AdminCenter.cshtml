@@ -2,6 +2,7 @@
 @model AdminCenterViewModel 
 
 <div class="table-responsive">
+    <h1>Benutzeranfragen:</h1>
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -37,4 +38,51 @@
             }
         </tbody>
     </table>
+
+    <h1>Berufsbereiche:</h1>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Bezeichnung</th>
+                <th>Beschreibung</th>
+                <th>Entfernen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var berufsbereich in Model.Berufsbereiche.Where(x => x.Bezeichnung != null))
+            {
+                <tr>
+                    <td>@berufsbereich.Bezeichnung</td>
+                    <td>@berufsbereich.Beschreibung</td>
+                    <td>
+                        <button class="btn btn-danger">
+                            <a class="btn btn-danger btn-sm"
+                               asp-action="DeleteBerufsbereich"
+                               asp-route-id="@berufsbereich.ID"
+                               onclick="return confirm('Wenn ein Berufsbereich gelöscht wird, werden alle Beiträge und Themen für diesen Berufsbereich gelöscht. ')">
+                                ✘
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="BerufsbereichErstellen" asp-controller="Admin" method="post">
+        <input asp-for="newBerufsbereich.ID" type="hidden" />
+
+        <div class="justify-content-center m-2">
+            <label asp-for="newBerufsbereich.Bezeichnung" class="form-label">Bezeichnung:</label><br />
+            <textarea asp-for="newBerufsbereich.Bezeichnung" class="form-control"></textarea>
+            <span asp-validation-for="newBerufsbereich.Bezeichnung" class="text-danger"></span>
+        </div>
+        <div class="justify-content-center m-2">
+            <label asp-for="newBerufsbereich.Beschreibung" class="form-label">Bezeichnung:</label><br />
+            <textarea asp-for="newBerufsbereich.Beschreibung" class="form-control"></textarea>
+            <span asp-validation-for="newBerufsbereich.Beschreibung" class="text-danger"></span>
+        </div>
+        <button class="btn btn-primary mb-2" type="submit">erstellen</button>
+    </form>
+
 </div>

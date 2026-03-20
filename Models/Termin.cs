@@ -17,10 +17,10 @@ namespace Die1Er_Projektarbeit.Models
         [Required]
         public string? Beschreibung { get; set; }
 
-        [Required]
+       
         public Benutzer? Ersteller { get; set; }
 
-        [Required]
+       
         public int ErstellerId { get; set; }
     }
 }

@@ -45,14 +45,14 @@ namespace Die1Er_Projektarbeit.Data
                 .HasOne(b => b.Thema)
                 .WithMany(x=>x.Beitraege)
                 .HasForeignKey(b => b.ThemaId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Thema>()
                 .HasOne(t => t.Ersteller)
                 .WithMany(x=>x.Themen)
                 .HasForeignKey(t => t.ErstellerId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            
             modelBuilder.Entity<Termin>()
                 .HasOne(t => t.Ersteller)
                 .WithMany(x=>x.Termine)
@@ -70,6 +70,12 @@ namespace Die1Er_Projektarbeit.Data
                 .WithMany(x=>x.Reaktionen)  
                 .HasForeignKey(r => r.BeitragId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Thema>()
+                .HasOne(r => r.Berufsbereich)
+                .WithMany(x => x.Themen)
+                .HasForeignKey(r => r.berufsbereichID)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

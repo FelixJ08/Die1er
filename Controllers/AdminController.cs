@@ -21,6 +21,8 @@ namespace Die1Er_Projektarbeit.Controllers
             }
             viewModel.BenutzerListe = _context.Benutzer.Where(x => x.Status == "Wartend").ToList();
 
+            viewModel.Berufsbereiche = _context.Berufsbereiches.ToList();
+
             return View(viewModel);
         }
 
@@ -40,6 +42,30 @@ namespace Die1Er_Projektarbeit.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("AdminCenter");
+        }
+
+        [HttpPost]
+        public IActionResult BerufsbereichErstellen(AdminCenterViewModel neu)
+        {
+            _context.Berufsbereiches.Add(neu.newBerufsbereich);
+            _context.SaveChanges();
+
+            return RedirectToAction("AdminCenter");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteBerufsbereich(int id)
+        {
+            var berufsbereich = await _context.Berufsbereiches.FindAsync(id);
+            if (berufsbereich == null) return NotFound();
+
+            berufsbereich.Bezeichnung = null;
+            berufsbereich.Beschreibung = null;
+
+            _context.Berufsbereiches.Update(berufsbereich);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("AdminCenter", "Admin");
         }
     }
 }

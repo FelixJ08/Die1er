@@ -8,10 +8,12 @@ namespace Die1Er_Projektarbeit.Models
     {
         public int ID { get; set; }
 
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string? Bezeichnung { get; set; }
 
         [MaxLength(500)]
         public string? Beschreibung { get; set; }
+
+        public List<Thema> Themen { get; set; }
     }
 }
