@@ -49,7 +49,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var berufsbereich in Model.Berufsbereiche)
+            @foreach (var berufsbereich in Model.Berufsbereiche.Where(x => x.Bezeichnung != null))
             {
                 <tr>
                     <td>@berufsbereich.Bezeichnung</td>

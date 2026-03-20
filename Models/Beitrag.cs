@@ -11,17 +11,13 @@ namespace Die1Er_Projektarbeit.Models
         [Required]
         public string? Inhalt { get; set; }
 
-        [Required]
         public Benutzer? Autor { get; set; }
 
-        [Required]
         public int AutorId { get; set; }
 
-        [Required]
         public Thema? Thema { get; set; }
 
-        [Required]
-        public int ThemaId { get; set; }
+        public int? ThemaId { get; set; }
 
         [Required]
         public DateTime? Datum { get; set; }

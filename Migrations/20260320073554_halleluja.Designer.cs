@@ -4,6 +4,7 @@ using Die1Er_Projektarbeit.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Die1Er_Projektarbeit.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260320073554_halleluja")]
+    partial class halleluja
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,6 +108,7 @@ namespace Die1Er_Projektarbeit.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Bezeichnung")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -458,7 +462,7 @@ namespace Die1Er_Projektarbeit.Migrations
                     b.HasOne("Die1Er_Projektarbeit.Models.Berufsbereich", "Berufsbereich")
                         .WithMany("Themen")
                         .HasForeignKey("berufsbereichID")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Berufsbereich");
 

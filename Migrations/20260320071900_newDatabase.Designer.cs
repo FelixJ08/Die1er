@@ -4,6 +4,7 @@ using Die1Er_Projektarbeit.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Die1Er_Projektarbeit.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260320071900_newDatabase")]
+    partial class newDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace Die1Er_Projektarbeit.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ThemaId")
+                    b.Property<int>("ThemaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -105,6 +108,7 @@ namespace Die1Er_Projektarbeit.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Bezeichnung")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -189,7 +193,7 @@ namespace Die1Er_Projektarbeit.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("berufsbereichID")
+                    b.Property<int>("berufsbereichID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -410,7 +414,8 @@ namespace Die1Er_Projektarbeit.Migrations
                     b.HasOne("Die1Er_Projektarbeit.Models.Thema", "Thema")
                         .WithMany("Beitraege")
                         .HasForeignKey("ThemaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Autor");
 
@@ -458,7 +463,8 @@ namespace Die1Er_Projektarbeit.Migrations
                     b.HasOne("Die1Er_Projektarbeit.Models.Berufsbereich", "Berufsbereich")
                         .WithMany("Themen")
                         .HasForeignKey("berufsbereichID")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Berufsbereich");
 

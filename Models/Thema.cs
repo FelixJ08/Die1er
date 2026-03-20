@@ -11,17 +11,13 @@ namespace Die1Er_Projektarbeit.Models
         [Required, MaxLength(100)]
         public string? Titel { get; set; }
 
-        [Required]
         public Benutzer? Ersteller { get; set; }
 
-        [Required]
         public int ErstellerId { get; set;}
 
-        [Required]
         public Berufsbereich? Berufsbereich { get; set; }
 
-        [Required]
-        public int berufsbereichID { get; set; }
+        public int? berufsbereichID { get; set; }
 
         [Required]
         public DateTime? Datum { get; set; }

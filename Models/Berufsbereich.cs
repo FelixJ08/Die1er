@@ -8,7 +8,7 @@ namespace Die1Er_Projektarbeit.Models
     {
         public int ID { get; set; }
 
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string? Bezeichnung { get; set; }
 
         [MaxLength(500)]

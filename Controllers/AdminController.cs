@@ -54,19 +54,18 @@ namespace Die1Er_Projektarbeit.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteBerufsbereich(int id)
+        public async Task<IActionResult> DeleteBerufsbereich(int id)
         {
-            //List<Thema> themen = _context.Thema.Where(x => x.Berufsbereich.ID == id).ToList();
-            
-            //themen.ForEach(x => x.Berufsbereich = null);
+            var berufsbereich = await _context.Berufsbereiches.FindAsync(id);
+            if (berufsbereich == null) return NotFound();
 
-            var berufsbereich = _context.Berufsbereiches.Find(id);
-            if (berufsbereich != null)
-            {
-                _context.Berufsbereiches.Remove(berufsbereich);
-                _context.SaveChanges();
-            }
-            return RedirectToAction("AdminCenter");
+            berufsbereich.Bezeichnung = null;
+            berufsbereich.Beschreibung = null;
+
+            _context.Berufsbereiches.Update(berufsbereich);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("AdminCenter", "Admin");
         }
     }
 }

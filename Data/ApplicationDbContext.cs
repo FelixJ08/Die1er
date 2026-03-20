@@ -52,7 +52,7 @@ namespace Die1Er_Projektarbeit.Data
                 .WithMany(x=>x.Themen)
                 .HasForeignKey(t => t.ErstellerId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            
             modelBuilder.Entity<Termin>()
                 .HasOne(t => t.Ersteller)
                 .WithMany(x=>x.Termine)
@@ -75,8 +75,7 @@ namespace Die1Er_Projektarbeit.Data
                 .HasOne(r => r.Berufsbereich)
                 .WithMany(x => x.Themen)
                 .HasForeignKey(r => r.berufsbereichID)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

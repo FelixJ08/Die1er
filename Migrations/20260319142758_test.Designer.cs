@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Die1Er_Projektarbeit.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260121071535_MigrationInit")]
-    partial class MigrationInit
+    [Migration("20260319142758_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,10 +68,14 @@ namespace Die1Er_Projektarbeit.Migrations
                         .HasMaxLength(320)
                         .HasColumnType("nvarchar(320)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Nachname")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rolle")
                         .IsRequired()
@@ -80,6 +84,11 @@ namespace Die1Er_Projektarbeit.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Vorname")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("ID");
 
@@ -173,9 +182,6 @@ namespace Die1Er_Projektarbeit.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("BerufsbereichID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
@@ -187,11 +193,14 @@ namespace Die1Er_Projektarbeit.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("berufsbereichID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("BerufsbereichID");
-
                     b.HasIndex("ErstellerId");
+
+                    b.HasIndex("berufsbereichID");
 
                     b.ToTable("Thema");
                 });
@@ -341,12 +350,10 @@ namespace Die1Er_Projektarbeit.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -383,12 +390,10 @@ namespace Die1Er_Projektarbeit.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -409,7 +414,7 @@ namespace Die1Er_Projektarbeit.Migrations
                     b.HasOne("Die1Er_Projektarbeit.Models.Thema", "Thema")
                         .WithMany("Beitraege")
                         .HasForeignKey("ThemaId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Autor");
@@ -449,16 +454,16 @@ namespace Die1Er_Projektarbeit.Migrations
 
             modelBuilder.Entity("Die1Er_Projektarbeit.Models.Thema", b =>
                 {
-                    b.HasOne("Die1Er_Projektarbeit.Models.Berufsbereich", "Berufsbereich")
-                        .WithMany()
-                        .HasForeignKey("BerufsbereichID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Die1Er_Projektarbeit.Models.Benutzer", "Ersteller")
                         .WithMany("Themen")
                         .HasForeignKey("ErstellerId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Die1Er_Projektarbeit.Models.Berufsbereich", "Berufsbereich")
+                        .WithMany("Themen")
+                        .HasForeignKey("berufsbereichID")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Berufsbereich");
@@ -530,6 +535,11 @@ namespace Die1Er_Projektarbeit.Migrations
 
                     b.Navigation("Termine");
 
+                    b.Navigation("Themen");
+                });
+
+            modelBuilder.Entity("Die1Er_Projektarbeit.Models.Berufsbereich", b =>
+                {
                     b.Navigation("Themen");
                 });
 
